@@ -17,6 +17,21 @@ let users = await userModel.find();
     res.render('read', { users });
 });
 
+app.get('/edit/:id', async (req, res) => {
+    let user = await userModel.findById(req.params.id);
+    res.render('edit', { user });
+});
+
+app.post('/update/:id', async (req, res) => {
+    let { name, email, image } = req.body;
+    let updatedUser = await userModel.findOneAndUpdate({_id: req.params.id}, {
+        name,
+        email,
+        image
+    }, { new: true });
+    res.redirect('/read');
+})
+
 app.post('/create', async (req, res) => {
    let { name, email, image } = req.body;
 
